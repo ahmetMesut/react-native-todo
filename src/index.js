@@ -1,33 +1,11 @@
 import React, {Component} from "react";
-import {TextInput, Dimensions, StyleSheet, Alert} from "react-native";
-import {
-    Container,
-    Text,
-    List,
-    ListItem,
-    Input,
-    InputGroup,
-    Content,
-    Header,
-    Title,
-    Button,
-    Icon,
-    Body
-} from "native-base";
+import {TextInput, Dimensions, StyleSheet, Alert,Keyboard} from "react-native";
+import {Container, Text, List, ListItem, Input, Content, Header, Title, Icon, Body} from "native-base";
 
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+// const width = Dimensions.get('window').width;
+// const height = Dimensions.get('window').height;
 
-
-const styles = StyleSheet.create({
-    col: {
-        paddingTop: height / 6,
-        paddingRight: width / 6,
-        paddingBottom: height / 6,
-        paddingLeft: width / 6
-    }
-});
 export default class Setup extends Component {
     constructor(props) {
         super(props);
@@ -41,7 +19,7 @@ export default class Setup extends Component {
     render() {
         return (
             <Container>
-                <Header><Body><Title>Header</Title></Body></Header>
+                <Header><Body><Title>TodoList</Title></Body></Header>
                 <Content keyboardShouldPersistTaps="always">
                     <List>
                         {this.__renderListItem()}
@@ -52,7 +30,9 @@ export default class Setup extends Component {
                         <Icon name="md-refresh" onPress={this.__onClear} style={{color:"orange",flex:1}}/>
                     </ListItem>
                     <ListItem>
-                        <Input style={{flex:12}} returnKeyType="done" placeholder="Todo.."value={this.state.text} onChangeText={(text) => this.setState({text})}/>
+                        <Input style={{flex:12}} returnKeyType="done"
+                               placeholder="Todo.." value={this.state.text}
+                               onChangeText={(text) => this.setState({text})}/>
                         <Icon name="md-add" style={{color:"green",flex:1}} onPress={this.__onCreate}/>
 
                     </ListItem>
@@ -78,7 +58,7 @@ export default class Setup extends Component {
             } else {
                 body.todoName = this.state.text;
             }
-            fetch("http://127.0.0.1:8080/todo", {
+            fetch("http://192.168.1.75:8080/todo", {
                 method: httpMethodType,
                 body: JSON.stringify(body),
                 headers: {
@@ -89,6 +69,7 @@ export default class Setup extends Component {
                 this.__readData();
                 this.setState({text: undefined, selectedData: undefined});
                 httpMethodType == "POST" ? Alert.alert("Saved success.") : Alert.alert("Updated success.");
+                Keyboard.dismiss();
             }).catch((error) => {
                 console.log(error)
             });
@@ -96,7 +77,7 @@ export default class Setup extends Component {
     };
 
     __onDelete = (row) => {
-        fetch("http://127.0.0.1:8080/todo", {
+        fetch("http://192.168.1.75:8080/todo", {
             method: 'DELETE',
             body: JSON.stringify(row),
             headers: {
@@ -140,7 +121,7 @@ export default class Setup extends Component {
     };
 
     __readData() {
-        fetch("http://127.0.0.1:8080/todo", {
+        fetch("http://192.168.1.75:8080/todo", {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
