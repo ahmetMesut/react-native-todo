@@ -5,6 +5,6 @@
  */
 
 import {AppRegistry} from 'react-native';
-import Setup from "./src/Setup";
+import Setup from "./src/index";
 
 AppRegistry.registerComponent('reactnativetodo', () => Setup);
